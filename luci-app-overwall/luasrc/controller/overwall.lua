@@ -4,12 +4,15 @@ local http=require"luci.http"
 CALL=luci.sys.call
 EXEC=luci.sys.exec
 function index()
+	entry({"admin", "services","overwall"}).dependent = true
+	entry({"admin", "services","overwall", "show"}, call("show_menu")).leaf = true
+	entry({"admin", "services","overwall", "hide"}, call("hide_menu")).leaf = true
 	if not nixio.fs.access("/etc/config/overwall") then
 		return
 	end
-	local e=entry({"admin","services","overwall"},firstchild(),_("Overwall"),2)
-	e.dependent=false
-	e.acl_depends={"luci-app-overwall"}
+	if nixio.fs.access("/etc/config/passwall_show") then
+		entry({"admin", "services","overwall"}, alias("admin", "services","overwall", "base"), ("Overwall"), 1).dependent = true
+	end
 	entry({"admin","services","overwall","base"},cbi("overwall/base"),_("Base Setting"),1).leaf=true
 	entry({"admin","services","overwall","servers"},arcombine(cbi("overwall/servers",{autoapply=true}),cbi("overwall/client-config")),_("Severs Nodes"),2).leaf=true
 	entry({"admin","services","overwall","shunt"},cbi("overwall/shunt"),_("Shunt Setting"),3).leaf=true
@@ -46,6 +49,16 @@ function status()
 	e.kcp=CALL("pidof kcptun-client >/dev/null")==0
 	http.prepare_content("application/json")
 	http.write_json(e)
+end
+
+function show_menu()
+	luci.sys.call("touch /etc/config/passwall_show")
+	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "overwall"))
+end
+
+function hide_menu()
+	luci.sys.call("rm -rf /etc/config/passwall_show")
+	luci.http.redirect(luci.dispatcher.build_url("admin", "status", "overview"))
 end
 
 function check()
