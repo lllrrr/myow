@@ -1,4 +1,0 @@
-msgid "Pass Wall"
-msgstr "PassWall"
-
-基本设置Overwall 设置
