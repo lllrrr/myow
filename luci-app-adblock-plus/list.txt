@@ -1,0 +1,19 @@
+/usr/share/adblock/adblock  1
+/lib/upgrade/keep.d/luci-app-adblock-plus
+/usr/lib/lua/luci/model/cbi/adblock/log.lua  1
+/etc/config/adblock 1
+/usr/lib/lua/luci/controller/adblock.lua  1
+/usr/lib/lua/luci/model/cbi/adblock/base.lua  1
+/usr/share/adblock/addown  1
+/usr/lib/lua/luci/view/adblock/refresh.htm  1
+/usr/lib/lua/luci/i18n/adblock.zh-cn.lmo
+/etc/init.d/adblock  1
+/usr/lib/lua/luci/model/cbi/adblock/white.lua  1
+/etc/adblock/white.list  1
+/usr/lib/lua/luci/model/cbi/adblock/ip.lua  1
+/usr/lib/lua/luci/view/adblock/adblock_status.htm  1
+/etc/adblock/black.list  1
+/etc/uci-defaults/luci-adblock   1
+/etc/adblock/ip.list  1
+/usr/lib/lua/luci/model/cbi/adblock/black.lua  1
+/usr/share/rpcd/acl.d/luci-app-adblock-plus.json  1
