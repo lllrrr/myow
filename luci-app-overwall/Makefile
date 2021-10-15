@@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=luci-app-overwall
 PKG_VERSION:=1
 PKG_RELEASE:=1
-PKG_DATE:=20210801
+PKG_DATE:=20211115
 
 include $(INCLUDE_DIR)/package.mk
 

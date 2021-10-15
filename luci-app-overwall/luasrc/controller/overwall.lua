@@ -4,15 +4,12 @@ local http=require"luci.http"
 CALL=luci.sys.call
 EXEC=luci.sys.exec
 function index()
-	entry({"admin", "services","overwall"}).dependent = true
-	entry({"admin", "services","overwall", "show"}, call("show_menu")).leaf = true
-	entry({"admin", "services","overwall", "hide"}, call("hide_menu")).leaf = true
 	if not nixio.fs.access("/etc/config/overwall") then
 		return
 	end
-	if nixio.fs.access("/etc/config/passwall_show") then
-		entry({"admin", "services","overwall"}, alias("admin", "services","overwall", "base"), ("Overwall"), 1).dependent = true
-	end
+	local e=entry({"admin","services","overwall"},firstchild(),_("Overwall"),2)
+	e.dependent=false
+	e.acl_depends={"luci-app-overwall"}
 	entry({"admin","services","overwall","base"},cbi("overwall/base"),_("Base Setting"),1).leaf=true
 	entry({"admin","services","overwall","servers"},arcombine(cbi("overwall/servers",{autoapply=true}),cbi("overwall/client-config")),_("Severs Nodes"),2).leaf=true
 	entry({"admin","services","overwall","shunt"},cbi("overwall/shunt"),_("Shunt Setting"),3).leaf=true
@@ -51,16 +48,6 @@ function status()
 	http.write_json(e)
 end
 
-function show_menu()
-	luci.sys.call("touch /etc/config/passwall_show")
-	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "overwall"))
-end
-
-function hide_menu()
-	luci.sys.call("rm -rf /etc/config/passwall_show")
-	luci.http.redirect(luci.dispatcher.build_url("admin", "status", "overview"))
-end
-
 function check()
 	local r=0
 	local u=http.formvalue("url")
@@ -93,7 +80,7 @@ function refresh()
 	local icount=0
 	local r
 	if set=="0" then
-		sret=CALL("curl -Lfso /tmp/gfw.b64 https://cdn.jsdelivr.net/gh/Lj2x16sRVDNJcuBv/lgtOgNsB/IwocS3gciO/gVxoEuEit5EJeEm")
+		sret=CALL("curl -Lfso /tmp/gfw.b64 https://cdn.jsdelivr.net/gh/yIwIoTT9A21nupT/2aXGmlWs/KkFCtZkeAP/avtPeqDKt645Arm")
 		if sret==0 then
 			CALL("/usr/share/overwall/gfw")
 			icount=EXEC("cat /tmp/gfwnew.txt | wc -l")
@@ -113,7 +100,7 @@ function refresh()
 			r="-1"
 		end
 	elseif set=="1" then
-		sret=CALL("A=`curl -Lfsm 9 https://cdn.jsdelivr.net/gh/Lj2x16sRVDNJcuBv/lgtOgNsB/IwocS3gciO/HbAsESdvo3K0mI4 || curl -Lfsm 9 https://raw.githubusercontent.com/Lj2x16sRVDNJcuBv/lgtOgNsB/master/IwocS3gciO/HbAsESdvo3K0mI4` && echo \"$A\" | base64 -d > /tmp/china.txt")
+		sret=CALL("A=`curl -Lfsm 9 https://cdn.jsdelivr.net/gh/yIwIoTT9A21nupT/2aXGmlWs/KkFCtZkeAP/eFw58nNRXXfTwU4 || curl -Lfsm 9 https://raw.githubusercontent.com/yIwIoTT9A21nupT/2aXGmlWs/master/KkFCtZkeAP/eFw58nNRXXfTwU4` && echo \"$A\" | base64 -d > /tmp/china.txt")
 		icount=EXEC("cat /tmp/china.txt | wc -l")
 		if sret==0 and tonumber(icount)>1000 then
 			oldcount=EXEC("cat /tmp/overwall/china.txt | wc -l")
@@ -128,7 +115,7 @@ function refresh()
 		end
 		EXEC("rm -f /tmp/china.txt ")
 	elseif set=="2" then
-		sret=CALL("A=`curl -Lfsm 9 https://cdn.jsdelivr.net/gh/Lj2x16sRVDNJcuBv/lgtOgNsB/IwocS3gciO/vY3PHj8qJmtTXg6 || curl -Lfsm 9 https://raw.githubusercontent.com/Lj2x16sRVDNJcuBv/lgtOgNsB/master/IwocS3gciO/vY3PHj8qJmtTXg6` && echo \"$A\" | base64 -d > /tmp/china_v6.txt")
+		sret=CALL("A=`curl -Lfsm 9 https://cdn.jsdelivr.net/gh/yIwIoTT9A21nupT/2aXGmlWs/KkFCtZkeAP/t8eOh94EJIHTXR6 || curl -Lfsm 9 https://raw.githubusercontent.com/yIwIoTT9A21nupT/2aXGmlWs/master/KkFCtZkeAP/t8eOh94EJIHTXR6` && echo \"$A\" | base64 -d > /tmp/china_v6.txt")
 		icount=EXEC("cat /tmp/china_v6.txt | wc -l")
 		if sret==0 and tonumber(icount)>1000 then
 			oldcount=EXEC("cat /tmp/overwall/china_v6.txt | wc -l")
